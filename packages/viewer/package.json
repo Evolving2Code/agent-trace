@@ -10,7 +10,7 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
-    "@agent-trace/core": "workspace:*",
+    "@evolving2code/agent-trace-core": "workspace:*",
     "framer-motion": "^12.4.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

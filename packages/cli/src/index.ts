@@ -16,14 +16,15 @@ import {
   resolveDbPath,
   seedAllDemos,
   seedDemoRun,
-} from "@agent-trace/core";
+} from "@evolving2code/agent-trace-core";
 import chalk from "chalk";
 import { Command } from "commander";
 import open from "open";
 import ora from "ora";
+import { resolveViewerDist } from "./paths.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const VIEWER_DIST = resolve(__dirname, "../../viewer/dist");
+const VIEWER_DIST = resolveViewerDist(import.meta.url);
 
 function handleError(error: unknown): never {
   const message = error instanceof Error ? error.message : String(error);
@@ -156,8 +157,9 @@ program
       console.log(chalk.green("▶"), `Replaying ${chalk.bold(run.name)} ${chalk.dim(`(${selectedRunId})`)}`);
 
       if (!existsSync(VIEWER_DIST)) {
-        console.log(chalk.yellow("Viewer not built. Starting dev server..."));
-        await startViewerDev(parseInt(opts.port, 10), exportPath, opts.open);
+        console.error(chalk.red("Replay studio assets not found."));
+        console.error(chalk.dim("Rebuild the package or reinstall @evolving2code/agent-trace."));
+        process.exit(1);
       } else {
         await serveViewer(parseInt(opts.port, 10), exportPath, opts.open);
       }
@@ -284,6 +286,7 @@ cursor
   });
 
 program
+  .command("import <file>")
   .description("Import a run from JSON")
   .option("-d, --db <path>", "Database path")
   .action((file: string, opts: { db?: string }) => {
@@ -373,29 +376,6 @@ async function serveViewer(port: number, exportPath: string, shouldOpen: boolean
     server.close();
     process.exit(0);
   });
-}
-
-async function startViewerDev(port: number, exportPath: string, shouldOpen: boolean): Promise<void> {
-  const viewerDir = resolve(__dirname, "../../viewer");
-  const env = { ...process.env, AGENT_TRACE_RUN_FILE: exportPath, PORT: String(port) };
-
-  const child = spawn("pnpm", ["dev", "--", "--port", String(port), "--host"], {
-    cwd: viewerDir,
-    env,
-    stdio: "inherit",
-    shell: true,
-  });
-
-  if (shouldOpen) {
-    setTimeout(() => open(`http://localhost:${port}`), 2000);
-  }
-
-  process.on("SIGINT", () => {
-    child.kill();
-    process.exit(0);
-  });
-
-  await new Promise<void>((resolve) => child.on("exit", resolve));
 }
 
 program.parse();

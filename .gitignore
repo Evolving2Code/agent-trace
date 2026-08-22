@@ -1,4 +1,5 @@
 node_modules/
+packages/cli/viewer-dist/
 .test-cursor-import.db
 dist/
 build/
