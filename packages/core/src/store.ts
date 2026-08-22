@@ -269,6 +269,8 @@ export class TraceStore {
       status: "ok",
     });
 
+    this.db.prepare("UPDATE runs SET status = 'forked' WHERE id = ?").run(forkedRun.id);
+
     return this.getRun(forkedRun.id)!;
   }
 
