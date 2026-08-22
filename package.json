@@ -1,0 +1,23 @@
+{
+  "name": "agent-trace",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "description": "Browser DevTools for AI agents — record, replay, and fork agent runs",
+  "license": "MIT",
+  "author": "Victor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Evolving2Code/agent-trace"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter @agent-trace/viewer dev",
+    "demo": "pnpm --filter @agent-trace/cli demo",
+    "play": "pnpm --filter @agent-trace/cli play",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

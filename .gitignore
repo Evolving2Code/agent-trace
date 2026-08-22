@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+*.db
+*.db-journal
+.agent-trace/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+coverage/
+.turbo/
+*.tsbuildinfo
