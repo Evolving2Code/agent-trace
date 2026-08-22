@@ -15,7 +15,8 @@
     "dev": "pnpm --filter @agent-trace/viewer dev",
     "demo": "node packages/cli/dist/index.js demo",
     "play": "node packages/cli/dist/index.js play",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
   },
   "engines": {
     "node": ">=20"

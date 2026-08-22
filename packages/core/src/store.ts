@@ -4,6 +4,7 @@ import { dirname } from "node:path";
 import { nanoid } from "nanoid";
 import type { ForkOptions, Run, RunSummary, TraceEvent } from "./types.js";
 import { RunSchema, TraceEventSchema } from "./types.js";
+import type { ParsedCursorTranscript } from "./cursor/types.js";
 
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS runs (
@@ -281,6 +282,13 @@ export class TraceStore {
   }
 
   importRun(data: { run: Run; events: TraceEvent[] }): Run {
+    return this.importParsedRun({
+      run: data.run,
+      events: data.events.map(({ id: _id, runId: _runId, ...event }) => event),
+    });
+  }
+
+  importParsedRun(data: ParsedCursorTranscript | { run: Partial<Run> & Pick<Run, "name" | "status" | "startedAt">; events: Array<Omit<TraceEvent, "id" | "runId">> }): Run {
     const run = this.createRun({
       name: data.run.name,
       source: data.run.source,
@@ -305,7 +313,21 @@ export class TraceStore {
       });
     }
 
-    this.completeRun(run.id, data.run.status === "failed" ? "failed" : "completed");
+    const status = data.run.status ?? "completed";
+    if (status === "completed" || status === "failed") {
+      this.completeRun(run.id, status);
+    } else {
+      this.db
+        .prepare("UPDATE runs SET status = ?, completed_at = ? WHERE id = ?")
+        .run(status, data.run.completedAt ?? Date.now(), run.id);
+    }
+
+    if (data.run.completedAt) {
+      this.db
+        .prepare("UPDATE runs SET completed_at = ? WHERE id = ?")
+        .run(data.run.completedAt, run.id);
+    }
+
     return this.getRun(run.id)!;
   }
 

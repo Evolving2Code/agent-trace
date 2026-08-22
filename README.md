@@ -46,6 +46,34 @@ pnpm install
 
 This is a one-time setup step per machine.
 
+## Import Cursor Transcripts
+
+Import agent runs from Cursor Cloud Agents or local Cursor IDE sessions:
+
+```bash
+# List transcripts discovered on this machine
+node packages/cli/dist/index.js cursor list
+
+# Import the most recent discovered transcript
+node packages/cli/dist/index.js import-cursor --latest
+
+# Import a specific transcript file or directory
+node packages/cli/dist/index.js import-cursor ~/.cursor/projects/<workspace>/agent-transcripts/<session>.jsonl
+node packages/cli/dist/index.js import-cursor /tmp/cursor/cloud-agent-transcripts/<batch>/<bcId>/transcript.json
+
+# Import and immediately open the replay studio
+node packages/cli/dist/index.js import-cursor --latest --play
+```
+
+### Supported formats
+
+| Format | Location | Notes |
+|---|---|---|
+| **Cloud JSON** | `/tmp/cursor/cloud-agent-transcripts/**/transcript.json` | Full tool I/O + timing (Cloud Agents) |
+| **Local JSONL** | `~/.cursor/projects/*/agent-transcripts/*.jsonl` | Desktop IDE sessions |
+
+The importer maps Cursor messages to agent-trace events: user prompts, agent thoughts, tool calls, file edits, shell commands, and completion status.
+
 ## Demo
 
 ```bash
@@ -105,6 +133,8 @@ agent-trace list              List recorded runs
 agent-trace play [run-id]     Open replay studio
 agent-trace export <run-id>   Export run as JSON
 agent-trace import <file>     Import run from JSON
+agent-trace import-cursor [path] Import Cursor transcript (--latest, --all, --play)
+agent-trace cursor list       List discovered Cursor transcripts
 agent-trace fork <run> <evt>  Fork run from event
 agent-trace scenarios         List demo scenarios
 ```
@@ -138,9 +168,9 @@ Events are stored in SQLite with full metadata: tokens, cost, latency, status, a
 | **Deterministic fork** | ✅ v0.1 | Branch from checkpoint with inherited history |
 | **Live shadow** | 🔜 v0.2 | Re-run with different model in parallel |
 
-## Integrations (roadmap)
+## Integrations
 
-- [ ] Cursor agent transcript import
+- [x] Cursor agent transcript import (cloud JSON + local JSONL)
 - [ ] Claude Code / Codex hook capture
 - [ ] OpenTelemetry ingest
 - [ ] Langfuse trace import
