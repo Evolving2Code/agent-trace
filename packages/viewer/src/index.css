@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-surface-0: #06060a;
+  --color-surface-1: #0c0c12;
+  --color-surface-2: #12121a;
+  --color-surface-3: #1a1a24;
+  --color-surface-4: #22222e;
+
+  --color-accent: #22d3ee;
+  --color-accent-dim: #0891b2;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-purple: #a78bfa;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(34, 211, 238, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.6); }
+}
+
+.playing-indicator {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.timeline-track {
+  background: linear-gradient(90deg, #1a1a24 0%, #22222e 100%);
+}
+
+.event-marker {
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.event-marker:hover {
+  transform: scale(1.4);
+}
+
+.glass {
+  background: rgba(12, 12, 18, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #22d3ee 0%, #a78bfa 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

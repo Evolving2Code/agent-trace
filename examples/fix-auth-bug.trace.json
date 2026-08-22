@@ -1,0 +1,174 @@
+{
+  "run": {
+    "id": "XT89Ac1xmUcA",
+    "name": "Refactor API",
+    "status": "completed",
+    "source": "cursor",
+    "model": "gpt-4.1",
+    "startedAt": 1787429294311,
+    "completedAt": 1787429294313,
+    "totalTokensIn": 8500,
+    "totalTokensOut": 220,
+    "totalCostUsd": 0.0321,
+    "totalLatencyMs": 5785,
+    "metadata": {
+      "scenario": "refactor-api",
+      "repo": "shop-api"
+    }
+  },
+  "events": [
+    {
+      "id": "_fNzFUtnGJPq",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 0,
+      "timestamp": 1787429204311,
+      "type": "run.started",
+      "data": {
+        "prompt": "Refactor the orders API to use repository pattern"
+      }
+    },
+    {
+      "id": "tgQCBb9Y7whL",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 1,
+      "timestamp": 1787429205511,
+      "type": "user.message",
+      "data": {
+        "content": "Refactor src/routes/orders.ts to use a repository pattern with proper tests"
+      }
+    },
+    {
+      "id": "2r7w7oS6NqTT",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 2,
+      "timestamp": 1787429206711,
+      "type": "agent.thought",
+      "data": {
+        "content": "I'll create an OrderRepository, update the route handlers, and add unit tests."
+      }
+    },
+    {
+      "id": "HrB4i6Xhzb5C",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 3,
+      "timestamp": 1787429207911,
+      "type": "tool.call",
+      "data": {
+        "tool": "Glob",
+        "pattern": "src/**/*.ts"
+      },
+      "latencyMs": 85
+    },
+    {
+      "id": "t5pD2g37bf-0",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 4,
+      "timestamp": 1787429209111,
+      "type": "tool.result",
+      "data": {
+        "tool": "Glob",
+        "files": [
+          "src/routes/orders.ts",
+          "src/models/order.ts",
+          "src/db.ts"
+        ]
+      }
+    },
+    {
+      "id": "mJuF27TGfGT-",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 5,
+      "timestamp": 1787429210311,
+      "type": "file.edit",
+      "data": {
+        "path": "src/repositories/orderRepository.ts",
+        "description": "Create OrderRepository class",
+        "diff": "+export class OrderRepository { ... }"
+      }
+    },
+    {
+      "id": "rdlp_wuDH-xz",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 6,
+      "timestamp": 1787429211511,
+      "type": "file.edit",
+      "data": {
+        "path": "src/routes/orders.ts",
+        "description": "Refactor route to use repository",
+        "diff": "-const db = getDb();\n+const repo = new OrderRepository();"
+      }
+    },
+    {
+      "id": "vLVrSlcMHO0S",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 7,
+      "timestamp": 1787429212711,
+      "type": "file.edit",
+      "data": {
+        "path": "src/repositories/orderRepository.test.ts",
+        "description": "Add unit tests",
+        "diff": "+describe('OrderRepository', () => { ... });"
+      }
+    },
+    {
+      "id": "dBW4ppDJButD",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 8,
+      "timestamp": 1787429213911,
+      "type": "shell.command",
+      "data": {
+        "command": "npm test",
+        "cwd": "shop-api"
+      },
+      "latencyMs": 4500
+    },
+    {
+      "id": "IFuQCZ5rl49h",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 9,
+      "timestamp": 1787429215111,
+      "type": "tool.result",
+      "data": {
+        "tool": "Shell",
+        "exitCode": 0,
+        "stdout": "✓ 28 tests passed"
+      },
+      "status": "ok"
+    },
+    {
+      "id": "zkC9-EoakKPG",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 10,
+      "timestamp": 1787429216311,
+      "type": "llm.request",
+      "data": {
+        "model": "gpt-4.1"
+      },
+      "tokensIn": 8500,
+      "costUsd": 0.0255,
+      "latencyMs": 1200
+    },
+    {
+      "id": "To_u1XocCkIG",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 11,
+      "timestamp": 1787429217511,
+      "type": "llm.response",
+      "data": {
+        "content": "Refactor complete. All tests passing."
+      },
+      "tokensOut": 220,
+      "costUsd": 0.0066
+    },
+    {
+      "id": "VAkbr1zAAN4R",
+      "runId": "XT89Ac1xmUcA",
+      "sequence": 12,
+      "timestamp": 1787429218711,
+      "type": "run.completed",
+      "data": {
+        "summary": "Refactored orders API to repository pattern with 8 new tests"
+      }
+    }
+  ]
+}

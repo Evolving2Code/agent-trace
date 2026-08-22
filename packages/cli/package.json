@@ -1,0 +1,28 @@
+{
+  "name": "@agent-trace/cli",
+  "version": "0.1.0",
+  "description": "CLI for recording, replaying, and forking AI agent runs",
+  "type": "module",
+  "bin": {
+    "agent-trace": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@agent-trace/core": "workspace:*",
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "open": "^10.1.0",
+    "ora": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  },
+  "license": "MIT"
+}
