@@ -23,14 +23,30 @@
   scrollbar-color: #333 transparent;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   margin: 0;
   overflow: hidden;
   font-family: var(--font-sans);
+  background: var(--color-surface-0);
+}
+
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
 }
 
 .font-mono {
   font-family: var(--font-mono);
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
 }
 
 @keyframes pulse-glow {
@@ -47,11 +63,13 @@ body {
 }
 
 .event-marker {
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s ease, opacity 0.15s ease, width 0.15s ease, height 0.15s ease;
 }
 
-.event-marker:hover {
-  transform: scale(1.4);
+@media (hover: hover) and (pointer: fine) {
+  .event-marker:hover {
+    transform: translate(-50%, -50%) scale(1.25);
+  }
 }
 
 .glass {
@@ -65,4 +83,10 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+@media (max-width: 767px) {
+  .app-shell {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 }

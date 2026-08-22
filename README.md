@@ -33,19 +33,30 @@ pnpm demo
 pnpm play
 ```
 
-That's it. The replay studio opens in your browser.
+The replay studio opens at `http://localhost:4173`. It works on desktop and mobile — on smaller screens, use the bottom tabs to switch between Timeline, Inspector, and Flow.
+
+### First-time install note
+
+`pnpm install` may ask you to approve native build scripts for `better-sqlite3` (the local SQLite driver). If prompted:
+
+```bash
+pnpm approve-builds   # select better-sqlite3
+pnpm install
+```
+
+This is a one-time setup step per machine.
 
 ## Demo
 
 ```bash
 # List available demo scenarios
-npx agent-trace scenarios
+node packages/cli/dist/index.js scenarios
 
 # Seed a specific scenario
-npx agent-trace demo --scenario infinite-loop
+pnpm demo -- --scenario infinite-loop
 
 # Replay a specific run
-npx agent-trace play <run-id>
+node packages/cli/dist/index.js play <run-id>
 ```
 
 ### Built-in scenarios
@@ -59,13 +70,18 @@ npx agent-trace play <run-id>
 ## Features
 
 ### 🎬 Timeline Replay
-Scrub through agent runs step-by-step with play/pause, speed control (0.5x–4x), and keyboard shortcuts.
+Scrub through agent runs step-by-step with play/pause, speed control (0.5x–4x), and keyboard shortcuts on desktop.
+
+### 📱 Responsive Replay Studio
+- **Mobile:** bottom tab navigation (Timeline / Inspector / Flow)
+- **Tablet:** event list + inspector side by side
+- **Desktop:** full three-panel layout with agent flow graph
 
 ### 🔀 Fork at Any Step
 Branch a run from any event. Inherited history is copied; new events append from the fork point.
 
 ```bash
-agent-trace fork <run-id> <event-id> --name "retry with gpt-4"
+node packages/cli/dist/index.js fork <run-id> <event-id> --name "retry with gpt-4"
 ```
 
 ### 📊 Live Cost & Token Tracking
@@ -76,8 +92,8 @@ Everything lives in `~/.agent-trace/traces.db`. No telemetry, no cloud dependenc
 
 ### 📤 Export & Share
 ```bash
-agent-trace export <run-id> -o my-run.trace.json
-agent-trace import my-run.trace.json
+node packages/cli/dist/index.js export <run-id> -o my-run.trace.json
+node packages/cli/dist/index.js import my-run.trace.json
 ```
 
 ## CLI Reference
@@ -138,7 +154,17 @@ pnpm build          # Build all packages
 pnpm dev            # Start viewer dev server
 pnpm demo           # Seed demo data
 pnpm play           # Open replay studio
+pnpm typecheck      # Type-check all packages
 ```
+
+## Troubleshooting
+
+| Issue | Fix |
+|---|---|
+| `pnpm install` fails on `better-sqlite3` | Run `pnpm approve-builds`, select `better-sqlite3`, then `pnpm install` again |
+| `pnpm play` says no traces | Run `pnpm demo` first |
+| Port 4173 already in use | `node packages/cli/dist/index.js play --port 4174` |
+| Viewer shows blank page | Run `pnpm build` to compile the viewer bundle |
 
 ## Comparison
 
@@ -150,10 +176,7 @@ pnpm play           # Open replay studio
 | Fork at checkpoint | ✅ | ❌ | Partial | ❌ |
 | Zero-config SQLite | ✅ | ❌ | ❌ | ❌ |
 | Coding-agent focus | ✅ | Partial | ❌ | Partial |
-
-## Star History
-
-If agent-trace helps you debug agents, consider starring the repo — it helps others discover the project.
+| Mobile-friendly replay UI | ✅ | Partial | ❌ | ❌ |
 
 ## License
 
