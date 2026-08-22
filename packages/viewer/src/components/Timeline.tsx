@@ -13,8 +13,8 @@ export function Timeline({ events, currentSequence, getEventColor, onSeek }: Tim
   const progress = events.length > 1 ? (currentSequence / (events.length - 1)) * 100 : 0;
 
   return (
-    <div className="px-6 py-4 border-t border-white/5 bg-surface-1">
-      <div className="relative h-8 timeline-track rounded-full overflow-hidden">
+    <div className="shrink-0 px-4 py-3 sm:px-6 sm:py-4 border-t border-white/5 bg-surface-1">
+      <div className="relative h-10 sm:h-8 timeline-track rounded-full overflow-hidden touch-manipulation">
         <div
           className="absolute inset-y-0 left-0 bg-accent/20 transition-all duration-200"
           style={{ width: `${progress}%` }}
@@ -22,23 +22,26 @@ export function Timeline({ events, currentSequence, getEventColor, onSeek }: Tim
         {events.map((event) => {
           const left = events.length > 1 ? (event.sequence / (events.length - 1)) * 100 : 50;
           const isPast = event.sequence <= currentSequence;
+          const isCurrent = event.sequence === currentSequence;
           return (
             <button
               key={event.id}
+              type="button"
               onClick={() => onSeek(event.sequence)}
-              className="event-marker absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full border border-surface-0"
+              aria-label={`Go to step ${event.sequence}: ${event.type}`}
+              className="event-marker absolute top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full border border-surface-0 touch-manipulation"
               style={{
                 left: `${left}%`,
+                width: isCurrent ? "14px" : "10px",
+                height: isCurrent ? "14px" : "10px",
                 backgroundColor: getEventColor(event.type),
                 opacity: isPast ? 1 : 0.3,
-                transform: `translate(-50%, -50%) scale(${event.sequence === currentSequence ? 1.5 : 1})`,
               }}
-              title={`Step ${event.sequence}: ${event.type}`}
             />
           );
         })}
       </div>
-      <div className="flex justify-between mt-1.5 text-[10px] font-mono text-zinc-600">
+      <div className="flex justify-between mt-2 text-[10px] font-mono text-zinc-600">
         <span>0</span>
         <span>
           step {currentSequence} / {events.length - 1}
