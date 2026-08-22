@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   DEMO_SCENARIOS,
   TraceStore,
+  discoverCursorTranscripts,
   formatCost,
   formatDuration,
   formatTokens,
+  importAllCursorTranscriptsInDirectory,
+  importCursorTranscript,
+  importLatestCursorTranscript,
   resolveDbPath,
   seedAllDemos,
   seedDemoRun,
@@ -183,7 +187,103 @@ program
   });
 
 program
-  .command("import <file>")
+  .command("import-cursor [path]")
+  .description("Import a Cursor agent transcript (cloud JSON or local JSONL)")
+  .option("-d, --db <path>", "Database path")
+  .option("-n, --name <name>", "Override run name")
+  .option("--latest", "Import the most recently discovered Cursor transcript")
+  .option("--all", "Import all transcripts in a directory")
+  .option("--play", "Open replay studio after import")
+  .action(async (inputPath: string | undefined, opts: {
+    db?: string;
+    name?: string;
+    latest?: boolean;
+    all?: boolean;
+    play?: boolean;
+  }) => {
+    const dbPath = resolveDbPath(opts.db);
+    const store = new TraceStore(dbPath);
+    const spinner = ora("Importing Cursor transcript...").start();
+
+    try {
+      let run;
+      if (opts.latest || !inputPath) {
+        const result = importLatestCursorTranscript(store, undefined, { name: opts.name });
+        run = result.run;
+        spinner.succeed(`Imported latest Cursor run from ${result.info.path}`);
+      } else if (opts.all) {
+        const runs = importAllCursorTranscriptsInDirectory(store, inputPath, { name: opts.name });
+        spinner.succeed(`Imported ${runs.length} Cursor run(s)`);
+        for (const imported of runs) {
+          console.log(`  ${chalk.cyan(imported.id)}  ${imported.name}`);
+        }
+        store.close();
+        return;
+      } else {
+        run = importCursorTranscript(store, inputPath, { name: opts.name });
+        spinner.succeed(`Imported Cursor transcript`);
+      }
+
+      const events = store.getEvents(run.id);
+      console.log(`  ${chalk.cyan(run.id)}  ${run.name}`);
+      console.log(
+        chalk.dim(
+          `  ${events.length} events · ${run.model ?? "cursor"} · ${formatDuration(run.totalLatencyMs)}`
+        )
+      );
+      console.log(chalk.dim(`\nRun ${chalk.white(`agent-trace play ${run.id}`)} to replay.`));
+
+      store.close();
+
+      if (opts.play) {
+        const { spawn } = await import("node:child_process");
+        const cliPath = fileURLToPath(import.meta.url);
+        spawn(process.execPath, [cliPath, "play", run.id, "--db", dbPath], {
+          stdio: "inherit",
+        });
+      }
+    } catch (error) {
+      spinner.fail("Failed to import Cursor transcript");
+      store.close();
+      handleError(error);
+    }
+  });
+
+const cursor = program.command("cursor").description("Cursor transcript utilities");
+
+cursor
+  .command("list")
+  .description("List discovered Cursor transcripts on this machine")
+  .option("--json", "Output as JSON")
+  .action((opts: { json?: boolean }) => {
+    const transcripts = discoverCursorTranscripts();
+
+    if (opts.json) {
+      console.log(JSON.stringify(transcripts, null, 2));
+      return;
+    }
+
+    if (transcripts.length === 0) {
+      console.log(chalk.yellow("No Cursor transcripts found."));
+      console.log(chalk.dim("Looked in ~/.cursor/projects and /tmp/cursor/cloud-agent-transcripts"));
+      return;
+    }
+
+    console.log(chalk.bold("\n  Cursor Transcripts\n"));
+    for (const transcript of transcripts) {
+      console.log(`  ${chalk.cyan(transcript.id)}  ${transcript.format}`);
+      console.log(`    ${transcript.name}`);
+      console.log(
+        chalk.dim(
+          `    ${transcript.path}${transcript.messageCount ? ` · ${transcript.messageCount} messages` : ""}`
+        )
+      );
+    }
+    console.log(chalk.dim(`\nImport with ${chalk.white("agent-trace import-cursor --latest")} or a file path.`));
+    console.log();
+  });
+
+program
   .description("Import a run from JSON")
   .option("-d, --db <path>", "Database path")
   .action((file: string, opts: { db?: string }) => {
