@@ -21,6 +21,12 @@ import ora from "ora";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const VIEWER_DIST = resolve(__dirname, "../../viewer/dist");
 
+function handleError(error: unknown): never {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(chalk.red("✗"), message);
+  process.exit(1);
+}
+
 const program = new Command();
 
 program
@@ -61,6 +67,9 @@ program
         console.log(`  ${chalk.cyan(id)}  ${run.name}  ${chalk.dim(run.source)}`);
       }
       console.log(chalk.dim(`\nRun ${chalk.white("agent-trace play")} to open the replay studio.`));
+    } catch (error) {
+      spinner.fail("Failed to seed demo traces");
+      handleError(error);
     } finally {
       store.close();
     }
@@ -166,6 +175,8 @@ program
       const output = opts.output ?? `${runId}.trace.json`;
       writeFileSync(output, JSON.stringify(data, null, 2));
       console.log(chalk.green("✓"), `Exported to ${chalk.cyan(output)}`);
+    } catch (error) {
+      handleError(error);
     } finally {
       store.close();
     }
@@ -182,6 +193,8 @@ program
       const data = JSON.parse(readFileSync(file, "utf-8"));
       const run = store.importRun(data);
       console.log(chalk.green("✓"), `Imported as ${chalk.cyan(run.id)} — ${run.name}`);
+    } catch (error) {
+      handleError(error);
     } finally {
       store.close();
     }
@@ -199,6 +212,8 @@ program
       const forked = store.forkRun(runId, { fromEventId: eventId, name: opts.name });
       console.log(chalk.green("✓"), `Forked run ${chalk.cyan(forked.id)} from step ${forked.forkFromSequence! + 1}`);
       console.log(chalk.dim(`  Run ${chalk.white(`agent-trace play ${forked.id}`)} to replay`));
+    } catch (error) {
+      handleError(error);
     } finally {
       store.close();
     }

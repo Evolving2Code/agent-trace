@@ -13,8 +13,8 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm --filter @agent-trace/viewer dev",
-    "demo": "pnpm --filter @agent-trace/cli demo",
-    "play": "pnpm --filter @agent-trace/cli play",
+    "demo": "node packages/cli/dist/index.js demo",
+    "play": "node packages/cli/dist/index.js play",
     "typecheck": "pnpm -r typecheck"
   },
   "engines": {
