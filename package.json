@@ -19,6 +19,7 @@
     "prepare:publish": "node scripts/prepare-publish.mjs",
     "pack:check": "pnpm prepare:publish && bash -lc 'cd packages/core && npm pack --pack-destination /tmp && cd ../cli && npm pack --pack-destination /tmp'",
     "publish:packages": "pnpm prepare:publish && pnpm --filter @evolving2code/agent-trace-core publish --access public && pnpm --filter @evolving2code/agent-trace publish --access public",
+    "record:hero": "node scripts/record-hero-demo.mjs",
     "test": "pnpm -r test"
   },
   "engines": {
