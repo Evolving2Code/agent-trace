@@ -37,7 +37,7 @@ const program = new Command();
 program
   .name("agent-trace")
   .description("Browser DevTools for AI agents — record, replay, and fork agent runs")
-  .version("0.1.0");
+  .version("0.1.1");
 
 program
   .command("init")
