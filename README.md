@@ -21,6 +21,19 @@ No cloud account. No signup. One SQLite file.
 
 ## Quick Start
 
+### From npm (recommended)
+
+```bash
+npx @evolving2code/agent-trace demo
+npx @evolving2code/agent-trace play
+```
+
+> The unscoped npm name `agent-trace` is used by another project. This repo publishes as **`@evolving2code/agent-trace`**.
+
+`npm install` may ask you to approve native build scripts for `better-sqlite3`. If prompted, allow the build — it's required for the local SQLite store.
+
+### From source
+
 ```bash
 # Clone and install
 git clone https://github.com/Evolving2Code/agent-trace.git
@@ -185,7 +198,11 @@ pnpm dev            # Start viewer dev server
 pnpm demo           # Seed demo data
 pnpm play           # Open replay studio
 pnpm typecheck      # Type-check all packages
+pnpm test           # Run tests
+pnpm pack:check     # Build publish tarballs locally
 ```
+
+See [PUBLISHING.md](PUBLISHING.md) for npm release instructions.
 
 ## Troubleshooting
 

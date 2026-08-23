@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import type { Run } from "@agent-trace/core/browser";
-import { formatCost, formatDuration, formatTokens } from "@agent-trace/core/browser";
+import type { Run } from "@evolving2code/agent-trace-core/browser";
+import { formatCost, formatDuration, formatTokens } from "@evolving2code/agent-trace-core/browser";
 
 interface HeaderProps {
   run: Run;

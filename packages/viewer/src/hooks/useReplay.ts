@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ReplayState, Run, TraceEvent } from "@agent-trace/core/browser";
+import type { ReplayState, Run, TraceEvent } from "@evolving2code/agent-trace-core/browser";
 import {
   ReplayEngine,
   formatCost,
@@ -7,7 +7,7 @@ import {
   formatTokens,
   getEventColor,
   getEventLabel,
-} from "@agent-trace/core/browser";
+} from "@evolving2code/agent-trace-core/browser";
 
 export function useReplay(run: Run, events: TraceEvent[]) {
   const engineRef = useRef<ReplayEngine | null>(null);

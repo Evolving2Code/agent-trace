@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { TraceEvent } from "@agent-trace/core/browser";
+import type { TraceEvent } from "@evolving2code/agent-trace-core/browser";
 
 interface AgentGraphProps {
   events: TraceEvent[];

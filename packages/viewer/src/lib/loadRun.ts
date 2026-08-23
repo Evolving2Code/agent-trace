@@ -1,4 +1,4 @@
-import type { Run, TraceEvent } from "@agent-trace/core/browser";
+import type { Run, TraceEvent } from "@evolving2code/agent-trace-core/browser";
 
 export interface RunData {
   run: Run;

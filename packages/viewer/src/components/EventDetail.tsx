@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import type { TraceEvent } from "@agent-trace/core/browser";
-import { formatTimestamp } from "@agent-trace/core/browser";
+import type { TraceEvent } from "@evolving2code/agent-trace-core/browser";
+import { formatTimestamp } from "@evolving2code/agent-trace-core/browser";
 
 interface EventDetailProps {
   event: TraceEvent | null;

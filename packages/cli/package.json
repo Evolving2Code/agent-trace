@@ -1,19 +1,23 @@
 {
-  "name": "@agent-trace/cli",
+  "name": "@evolving2code/agent-trace",
   "version": "0.1.0",
-  "description": "CLI for recording, replaying, and forking AI agent runs",
+  "description": "Browser DevTools for AI agents — record, replay, and fork agent runs",
   "type": "module",
   "bin": {
     "agent-trace": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "viewer-dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "prepack": "node ../../scripts/prepare-publish.mjs"
   },
   "dependencies": {
-    "@agent-trace/core": "workspace:*",
+    "@evolving2code/agent-trace-core": "workspace:*",
     "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "open": "^10.1.0",
@@ -24,5 +28,31 @@
     "tsx": "^4.19.3",
     "typescript": "^5.7.3"
   },
-  "license": "MIT"
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Evolving2Code/agent-trace.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/Evolving2Code/agent-trace/issues"
+  },
+  "homepage": "https://github.com/Evolving2Code/agent-trace#readme",
+  "author": "Victor",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "observability",
+    "replay",
+    "cursor",
+    "cli",
+    "devtools",
+    "coding-agent"
+  ]
 }
