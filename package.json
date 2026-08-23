@@ -18,7 +18,7 @@
     "typecheck": "pnpm -r typecheck",
     "prepare:publish": "node scripts/prepare-publish.mjs",
     "pack:check": "pnpm prepare:publish && bash -lc 'cd packages/core && npm pack --pack-destination /tmp && cd ../cli && npm pack --pack-destination /tmp'",
-    "publish:packages": "pnpm prepare:publish && pnpm --filter @evolving2code/agent-trace-core publish --access public --no-git-checks && pnpm --filter @evolving2code/agent-trace publish --access public --no-git-checks",
+    "publish:packages": "pnpm prepare:publish && pnpm --filter @evolving2code/agent-trace-core publish --access public && pnpm --filter @evolving2code/agent-trace publish --access public",
     "test": "pnpm -r test"
   },
   "engines": {
