@@ -9,6 +9,9 @@
  *   4. npm i -D playwright && npx playwright install chromium
  *   5. ffmpeg
  *
+ * Outputs docs/assets/replay-studio.gif (README hero) and replay-studio.mp4.
+ * Note: GitHub strips <video> tags with relative src — use the GIF in README.
+ *
  * Usage (from repo root):
  *   pnpm record:hero
  */

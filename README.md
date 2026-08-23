@@ -7,9 +7,7 @@
 [![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](package.json)
 
 <p align="center">
-  <video src="docs/assets/replay-studio.mp4" autoplay loop muted playsinline width="100%"></video>
-  <br />
-  <sub><a href="docs/assets/replay-studio.gif">GIF version</a></sub>
+  <img src="docs/assets/replay-studio.gif" alt="agent-trace replay studio — scrub through agent runs, inspect tool calls, and watch cost update in real time" width="100%" />
 </p>
 
 <p align="center">
