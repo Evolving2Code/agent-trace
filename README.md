@@ -3,10 +3,22 @@
 **Browser DevTools for AI agents** — record, replay, and fork agent runs locally.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@evolving2code/agent-trace)](https://www.npmjs.com/package/@evolving2code/agent-trace)
 [![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](package.json)
 
 <p align="center">
-  <strong>🎬 Scrub through agent runs like a video · 🔀 Fork at any step · 📊 Watch cost burn in real-time</strong>
+  <img src="docs/assets/replay-studio.gif" alt="agent-trace replay studio — scrub through agent runs, inspect tool calls, and watch cost update in real time" width="100%" />
+</p>
+
+<p align="center">
+  <em>Scrub through agent runs like a video · Fork at any checkpoint · Watch tokens and cost update in real time</em>
+</p>
+
+<p align="center">
+  <a href="#quick-start"><strong>Quick Start</strong></a> ·
+  <a href="#import-cursor-transcripts">Import Cursor</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#cli-reference">CLI</a>
 </p>
 
 ---
@@ -15,7 +27,7 @@
 
 AI agents are black boxes. When they loop, hallucinate, or burn through your API budget, you're stuck reading raw JSON logs.
 
-**agent-trace** is a local-first replay studio for coding agents. It records every thought, tool call, and LLM request as an event stream — then lets you scrub through runs, fork from any checkpoint, and diff golden vs. failed behavior.
+**agent-trace** is a local-first replay studio for coding agents. It records every thought, tool call, and LLM request as an event stream — then lets you scrub through runs, fork from any checkpoint, and compare golden vs. failed behavior.
 
 No cloud account. No signup. One SQLite file.
 
@@ -200,6 +212,7 @@ pnpm play           # Open replay studio
 pnpm typecheck      # Type-check all packages
 pnpm test           # Run tests
 pnpm pack:check     # Build publish tarballs locally
+pnpm record:hero   # Re-record README demo (requires Playwright + replay studio on :4173)
 ```
 
 See [PUBLISHING.md](PUBLISHING.md) for npm release instructions.
